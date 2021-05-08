@@ -49,6 +49,10 @@ namespace prueba1
             this.txtBuscar = new System.Windows.Forms.TextBox();
             this.mySqlCommand1 = new MySql.Data.MySqlClient.MySqlCommand();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.lblId = new System.Windows.Forms.Label();
+            this.txtId = new System.Windows.Forms.TextBox();
+            this.lblFecha = new System.Windows.Forms.Label();
+            this.dateTimePickerFecha = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.dataTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -216,11 +220,48 @@ namespace prueba1
             this.errorProvider1.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.errorProvider1.ContainerControl = this;
             // 
+            // lblId
+            // 
+            this.lblId.AutoSize = true;
+            this.lblId.Location = new System.Drawing.Point(429, 35);
+            this.lblId.Name = "lblId";
+            this.lblId.Size = new System.Drawing.Size(31, 20);
+            this.lblId.TabIndex = 19;
+            this.lblId.Text = "ID: ";
+            // 
+            // txtId
+            // 
+            this.txtId.Location = new System.Drawing.Point(466, 32);
+            this.txtId.Name = "txtId";
+            this.txtId.Size = new System.Drawing.Size(201, 27);
+            this.txtId.TabIndex = 20;
+            this.txtId.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.letrasynumeros_KeyPress);
+            // 
+            // lblFecha
+            // 
+            this.lblFecha.AutoSize = true;
+            this.lblFecha.Location = new System.Drawing.Point(695, 35);
+            this.lblFecha.Name = "lblFecha";
+            this.lblFecha.Size = new System.Drawing.Size(50, 20);
+            this.lblFecha.TabIndex = 21;
+            this.lblFecha.Text = "Fecha:";
+            // 
+            // dateTimePickerFecha
+            // 
+            this.dateTimePickerFecha.Location = new System.Drawing.Point(751, 32);
+            this.dateTimePickerFecha.Name = "dateTimePickerFecha";
+            this.dateTimePickerFecha.Size = new System.Drawing.Size(268, 27);
+            this.dateTimePickerFecha.TabIndex = 22;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1105, 583);
+            this.Controls.Add(this.dateTimePickerFecha);
+            this.Controls.Add(this.lblFecha);
+            this.Controls.Add(this.txtId);
+            this.Controls.Add(this.lblId);
             this.Controls.Add(this.txtBuscar);
             this.Controls.Add(this.lblBuscar);
             this.Controls.Add(this.dataTable);
@@ -271,6 +312,10 @@ namespace prueba1
         private System.Windows.Forms.TextBox txtBuscar;
         private MySql.Data.MySqlClient.MySqlCommand mySqlCommand1;
         private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.DateTimePicker dateTimePickerFecha;
+        private System.Windows.Forms.Label lblFecha;
+        private System.Windows.Forms.TextBox txtId;
+        private System.Windows.Forms.Label lblId;
     }
 }
 

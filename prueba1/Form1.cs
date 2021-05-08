@@ -29,6 +29,7 @@ namespace prueba1
         {
             try
             {
+                errorProvider1.Clear();
                 Boolean error = false;
                 if (txtNombre.Text == "")
                 {
@@ -60,6 +61,17 @@ namespace prueba1
                     error = true;
                     errorProvider1.SetError(txtColonia, "El campo es requerido");
                 }
+                if (txtId.Text == "")
+                {
+                    error = true;
+                    errorProvider1.SetError(txtId, "El campo es requerido");
+                }
+                if (dateTimePickerFecha.Text == "")
+                {
+                    error = true;
+                    errorProvider1.SetError(dateTimePickerFecha, "El campo es requerido");
+                }
+
                 if (!error)
                 {
                     conexion.Open();
@@ -70,33 +82,32 @@ namespace prueba1
                                     "VALUES ('" + txtCalle.Text + "', '" + txtNumero.Text + "', '" + txtColonia.Text + "');" +
                                     "SET @lastidAddress = LAST_INSERT_ID();" +
                                     "INSERT INTO distributors (id_distributor, fecha_registro, id_person, id_address)" +
-                                    "VALUES('83JK', CURRENT_DATE, @lastidPerson, @lastidAddress)";
+                                    "VALUES('" + txtId.Text + "', '" + dateTimePickerFecha.Value.ToString("yyyy-MM-dd") + "', @lastidPerson, @lastidAddress)";
                     MySqlCommand comando = new MySqlCommand(query, conexion);
-                    comando.ExecuteNonQuery();
-                    conexion.Close();
+                    comando.ExecuteNonQuery();                    
+                    Clean(this);
+                    dateTimePickerFecha.Value = DateTime.Now;
                     MessageBox.Show("Se ha guardado el distribuidor correctamente");
                 }
             }
-            catch (Exception)
+            catch (MySqlException error)
             {
-                MessageBox.Show("Ocurrió un errror");
+                string message = "";
+                switch(error.Number) {
+                    case 1062:
+                        message = "El ID " + txtId.Text + " ya ha sido registrado";
+                        break;
+                }
+                MessageBox.Show("Ocurrió un errror. " + message);
             }
+            conexion.Close();
         }
 
         private void btnConsultar_Click(object sender, EventArgs e)
         {
-
             try
             {
-                string query = "SELECT CONCAT(nombre, ' ', apellido_paterno, ' ', apellido_materno) AS 'Nombre Completo', " +
-                                "calle AS Calle, numero AS Número, colonia AS Colonia FROM distributors " +
-                                "INNER JOIN addresses on addresses.id_address = distributors.id_address " +
-                                "INNER JOIN persons on persons.id_person = distributors.id_person";
-
-                if (txtBuscar.Text.Length > 0)
-                {
-                    query = query + " WHERE id_distributor = '" + txtBuscar.Text + "'";
-                }
+                string query = "CALL getDistributor('" + txtBuscar.Text + "')";
                 MySqlCommand comando = new MySqlCommand(query, conexion);
                 MySqlDataAdapter adaptador = new MySqlDataAdapter();
                 adaptador.SelectCommand = comando;
@@ -109,6 +120,20 @@ namespace prueba1
             }
             
         }
+
+
+        public static void Clean(Form form)
+        {
+            // Checar todos los textbox del formulario
+            foreach (Control oControls in form.Controls)
+            {
+                if (oControls is TextBox)
+                {
+                    oControls.Text = ""; // Eliminar el texto del TextBox
+                }
+            }
+        }
+
 
         private void txtNumero_KeyPress(object sender, KeyPressEventArgs e)
         {
